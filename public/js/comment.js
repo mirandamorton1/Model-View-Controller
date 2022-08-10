@@ -2,23 +2,24 @@
 const newFormHandler = async (event) => {
     event.preventDefault();
   
-    const name = document.querySelector('#project-name').value.trim();
-    const needed_funding = document.querySelector('#project-funding').value.trim();
-    const description = document.querySelector('#project-desc').value.trim();
+    const comment_text = document.querySelector('#comment-body').value.trim();
+    const post_id = window.location.toString().split('/') [
+      window.locationtoString().split('/').length -1
+    ]; 
   
-    if (name && needed_funding && description) {
-      const response = await fetch(`/api/projects`, {
+    if (comment_text) {
+      const response = await fetch(`/api/comments`, {
         method: 'POST',
-        body: JSON.stringify({ name, needed_funding, description }),
+        body: JSON.stringify({ post_id, comment_text }),
         headers: {
           'Content-Type': 'application/json',
         },
       });
   
       if (response.ok) {
-        document.location.replace('/profile');
+        document.location.reload();
       } else {
-        alert('Failed to create project');
+        alert(response.statusText);
       }
     }
   };
@@ -40,9 +41,6 @@ const newFormHandler = async (event) => {
   };
   
   document
-    .querySelector('.new-project-form')
+    .querySelector('.new-form')
     .addEventListener('submit', newFormHandler);
   
-  document
-    .querySelector('.project-list')
-    .addEventListener('click', delButtonHandler);
